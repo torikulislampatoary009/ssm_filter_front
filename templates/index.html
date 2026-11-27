@@ -1,1 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spam SMS Filter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <div class="top-text">
+      <h1>Is this text spam?</h1>
+      <p>Paste an SMS and the filter scores it from the words it contains, then shows which words gave it away.</p>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite">
+      <span class="dot"></span><span id="status-text">Connecting to server</span>
+    </div>
+  </header>
 
+  <main class="grid">
+    <section class="check" aria-labelledby="msg-label">
+      <label id="msg-label" for="message" class="field-label">Message</label>
+      <textarea id="message" rows="5" maxlength="1000" placeholder="Paste or type the text message here"></textarea>
+      <div class="composer-row">
+        <button id="check-btn" class="primary" type="button">Check message</button>
+        <span class="count" id="count">0 / 1000</span>
+      </div>
+
+      <div class="examples">
+        <span class="examples-label">Try an example</span>
+        <div class="chips" id="examples"></div>
+      </div>
+
+      <p class="notice" id="notice" role="alert" hidden></p>
+
+      <section id="result" class="result" hidden aria-live="polite">
+        <div class="thread">
+          <div class="sender">Unknown sender</div>
+          <div class="bubble" id="bubble"></div>
+        </div>
+
+        <div class="verdict" id="verdict">
+          <div class="verdict-main">
+            <span class="verdict-word" id="verdict-word"></span>
+            <span class="verdict-detail" id="verdict-detail"></span>
+          </div>
+          <div class="meter" aria-hidden="true">
+            <div class="meter-fill" id="meter-fill"></div>
+            <div class="meter-mark" id="meter-mark"></div>
+          </div>
+          <div class="meter-scale"><span>Not spam</span><span>Spam</span></div>
+        </div>
+
+        <div class="signals">
+          <div>
+            <h3>Pushed toward spam</h3>
+            <ul class="chips" id="sig-spam"></ul>
+          </div>
+          <div>
+            <h3>Pushed toward not spam</h3>
+            <ul class="chips" id="sig-ham"></ul>
+          </div>
+        </div>
+        <p class="legend">Highlighted words in the message above: red raised the spam score, green lowered it.</p>
+      </section>
+    </section>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="model-h">
+        <h2 id="model-h">The model</h2>
+        <p class="model-name" id="model-name">Loading</p>
+        <dl class="metrics" id="metrics"></dl>
+        <p class="small" id="model-note"></p>
+        <h3>Words it watches for most</h3>
+        <ul class="chips" id="top-spam"></ul>
+      </section>
+
+      <section class="card" aria-labelledby="hist-h">
+        <div class="card-head">
+          <h2 id="hist-h">Recent checks</h2>
+          <button id="clear-btn" class="quiet" type="button">Clear</button>
+        </div>
+        <p class="tally" id="tally"></p>
+        <ul class="history" id="history"></ul>
+        <p class="small" id="history-empty">Messages you check will appear here.</p>
+      </section>
+    </aside>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
