@@ -1,0 +1,13 @@
+# Optional Render blueprint for the frontend (you can also fill these in by hand in the dashboard).
+services:
+  - type: web
+    name: spam-sms-frontend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 2 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: BACKEND_URL
+        value: https://YOUR-BACKEND-NAME.onrender.com
